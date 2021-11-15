@@ -1,4 +1,3 @@
-//#include <iostream>
 #include "TraceParser.h"
 
 TraceParser::TraceParser(const string& input_file_path) {
@@ -23,20 +22,3 @@ bool TraceParser::getNextTraceLine(TraceEvent *cur_event) {
 
     return true;
 }
-
-
-//int main(){
-//    TraceParser pp("test.txt");
-//    TraceEvent te;
-//    bool tmp;
-//    tmp = pp.getNextTraceLine(&te);
-//    cout << te.wr_flag << ' ' << te.address << ' ' << tmp << endl;
-//    tmp = pp.getNextTraceLine(&te);
-//    cout << te.wr_flag << ' ' << te.address << ' ' << tmp << endl;
-//    tmp = pp.getNextTraceLine(&te);
-//    cout << te.wr_flag << ' ' << te.address << ' ' << tmp << endl;
-//    tmp = pp.getNextTraceLine(&te);
-//    cout << te.wr_flag << ' ' << te.address << ' ' << tmp << endl;
-//    tmp = pp.getNextTraceLine(&te);
-//    cout << te.wr_flag << ' ' << te.address << ' ' << tmp << endl;
-//}
