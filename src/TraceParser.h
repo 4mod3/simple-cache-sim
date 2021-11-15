@@ -23,7 +23,7 @@ class TraceParser {
         ~TraceParser();
         TraceParser(TraceParser&&) = default;
 
-        bool getNextTraceLine(TraceEvent *cur_event);
+        bool getNextTraceLine(TraceEvent *cur_event); // if eof occur, return false, else true
 
         bool eof() const { return input.eof(); }
 

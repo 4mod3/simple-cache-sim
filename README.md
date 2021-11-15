@@ -8,3 +8,12 @@
 
 ### Input
 traceX.txt, indicating CPU-X's L/S ops.
+
+### Usage
+
+```make
+make build run
+make clean
+```
+### Lisence
+MIT

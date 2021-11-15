@@ -8,7 +8,7 @@
 #define CACHE_SIM_UNIT_H
 
 #define TAG_WIDTH 58
-#define CACHE_LINE_N 16
+#define CACHE_LINE_N 4
 
 using namespace std;
 
@@ -46,12 +46,11 @@ class CacheSimUnit{
                 
         TraceParser SpecParser;
 
-        // _function
-        node_ptr_t hitCheck(uint64_t tag);
+        node_ptr_t hitCheck(uint64_t tag); // check hit or miss, if hit return ptr, else return nullptr
 
-        bool addNode(uint64_t tag, CacheLineStatus s);
+        bool addNode(uint64_t tag, CacheLineStatus s); // add Node to list, if full then swap out the LRU-node
 
-        void localOp(TraceEvent *core_in);
+        void localOp(TraceEvent *core_in); // self load/store operations, update self Status
 
     public:
 
@@ -63,12 +62,11 @@ class CacheSimUnit{
             SpecParser(trace_file_path) {};
 
         ~CacheSimUnit() = default;
-        CacheSimUnit(CacheSimUnit&&) = default;
-        CacheSimUnit(const CacheSimUnit&) = delete;
+        CacheSimUnit(CacheSimUnit&&)=default;
 
-        void outputStatus();
-        void updateStatus(const unsigned short uid, TraceEvent *bus_in);
-        bool run(TraceEvent *bus_event); // reutrn validness for bus
+        void outputStatus(); // output simulate-result
+        void updateStatus(const unsigned short uid, TraceEvent *bus_in); // update local Status according to Bus-Event
+        bool run(TraceEvent *bus_event); // reutrn validness for bus_event
 };
 
 #endif /* ifndef CACHE_SIM_UNIT_H */

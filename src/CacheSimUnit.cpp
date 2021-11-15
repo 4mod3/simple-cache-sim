@@ -7,9 +7,11 @@ bool CacheSimUnit::addNode(uint64_t tag, CacheLineStatus s) {
     tag_map[tag] = new_node_ptr;
 
     if(head == nullptr) {
+        // the first node
         head = new_node_ptr;
         tail = new_node_ptr;
     } else {
+        // add new node to the head
         new_node_ptr->next = head;
         head->last = new_node_ptr;
         head = new_node_ptr;
@@ -22,8 +24,9 @@ bool CacheSimUnit::addNode(uint64_t tag, CacheLineStatus s) {
         res = tag_map.erase(tail->node_value.first);
         tail = tail->last;
         tail->next = nullptr;
+        return res;
     }
-    return res;
+    return true;
 }
 
 node_ptr_t CacheSimUnit::hitCheck(uint64_t tag) {
@@ -44,13 +47,14 @@ void CacheSimUnit::localOp(TraceEvent *core_in) {
             addNode(tag_in, M); // error if false
         }
     } else {
+        // hit, then update Status
         if(core_in->wr_flag == '1') {
             check_ptr->node_value.second = M;
         } else if(check_ptr->node_value.second == I) {
             check_ptr->node_value.second = S;
         }
 
-        // move hit CacheLineNode to the head
+        // move hited-CacheLineNode to the head
         if(check_ptr->next == nullptr && check_ptr->last != nullptr) {
             check_ptr->next = head;
             tail = check_ptr->last;
@@ -72,11 +76,13 @@ void CacheSimUnit::updateStatus(const unsigned short uid_in, TraceEvent *bus_in)
         return;
     } 
 
+    // firstly, check if bus_event->tag is one of self-CacheLines
     const auto check_ptr = hitCheck(bus_in->address >> (64-TAG_WIDTH));
     if(check_ptr == nullptr){
         return;
     }
 
+    // update Status
     if(bus_in->wr_flag == '1') {
         check_ptr->node_value.second = I;
     } else if(bus_in->wr_flag == '0') {
